@@ -11,169 +11,131 @@
       href="https://unpkg.com/photoswipe@5/dist/photoswipe.css"
     />
     <style>
+      :root {
+        --gallery-gap: 4px;
+      }
       body {
         margin: 0;
-        padding: 20px;
-        font-family: sans-serif;
-        background: #f0f0f0;
+        padding: 10px;
+        font-family: system-ui, -apple-system, sans-serif;
+        background: #f8f8f8;
+        color: #333;
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
       }
       .gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 12px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--gallery-gap);
+        max-width: 1200px;
+        margin: 0 auto;
       }
+
+      @media (min-width: 600px) {
+        .gallery {
+          grid-template-columns: repeat(3, 1fr);
+        }
+        body {
+          padding: 20px;
+        }
+      }
+
+      @media (min-width: 900px) {
+        .gallery {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      .gallery a {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+        aspect-ratio: 1;
+      }
+
+      .gallery a:hover {
+        transform: scale(1.02);
+      }
+
       .gallery a img {
         width: 100%;
-        border-radius: 10px;
+        height: 100%;
         object-fit: cover;
         display: block;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.5s ease;
+      }
+
+      .gallery a:hover img {
+        transform: scale(1.05);
+      }
+
+      .pswp__container {
+        transition: transform 0.4s ease-out !important;
+      }
+
+      .pswp__img {
+        border-radius: 4px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       }
     </style>
   </head>
   <body>
     <h2>📸 Bộ sưu tập ảnh mẫu</h2>
     <div class="gallery" id="gallery">
-      <!-- 20 ảnh mẫu -->
+      <!-- 5 ảnh từ R2 -->
       <a
-        href="https://picsum.photos/id/1015/1200/800"
+        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/followus-fb.jpg"
         data-pswp-width="1200"
         data-pswp-height="800"
       >
-        <img src="https://picsum.photos/id/1015/300/200" alt="Sample 1" />
+        <img
+          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/followus-fb.jpg"
+          alt="R2 Image 1"
+        />
       </a>
       <a
-        href="https://picsum.photos/id/1016/1200/800"
+        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/followus-web.jpg"
         data-pswp-width="1200"
         data-pswp-height="800"
       >
-        <img src="https://picsum.photos/id/1016/300/200" alt="Sample 2" />
+        <img
+          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/followus-web.jpg"
+          alt="R2 Image 2"
+        />
       </a>
       <a
-        href="https://picsum.photos/id/1025/1200/800"
+        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/g-64-m-l1-2.jpg"
         data-pswp-width="1200"
         data-pswp-height="800"
       >
-        <img src="https://picsum.photos/id/1025/300/200" alt="Sample 3" />
+        <img
+          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/g-64-m-l1-2.jpg"
+          alt="R2 Image 3"
+        />
       </a>
       <a
-        href="https://picsum.photos/id/1024/1200/800"
+        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/g-st25-m-l1-2.jpg"
         data-pswp-width="1200"
         data-pswp-height="800"
       >
-        <img src="https://picsum.photos/id/1024/300/200" alt="Sample 4" />
+        <img
+          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/g-st25-m-l1-2.jpg"
+          alt="R2 Image 4"
+        />
       </a>
       <a
-        href="https://picsum.photos/id/1040/1200/800"
+        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/shopee%20cover.png"
         data-pswp-width="1200"
         data-pswp-height="800"
       >
-        <img src="https://picsum.photos/id/1040/300/200" alt="Sample 5" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1056/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1056/300/200" alt="Sample 6" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1069/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1069/300/200" alt="Sample 7" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1070/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1070/300/200" alt="Sample 8" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1080/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1080/300/200" alt="Sample 9" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1084/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1084/300/200" alt="Sample 10" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1082/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1082/300/200" alt="Sample 11" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1081/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1081/300/200" alt="Sample 12" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1036/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1036/300/200" alt="Sample 13" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1035/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1035/300/200" alt="Sample 14" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1033/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1033/300/200" alt="Sample 15" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1032/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1032/300/200" alt="Sample 16" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1029/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1029/300/200" alt="Sample 17" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1027/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1027/300/200" alt="Sample 18" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1019/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1019/300/200" alt="Sample 19" />
-      </a>
-      <a
-        href="https://picsum.photos/id/1018/1200/800"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img src="https://picsum.photos/id/1018/300/200" alt="Sample 20" />
+        <img
+          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/shopee%20cover.png"
+          alt="R2 Image 5"
+        />
       </a>
     </div>
 
@@ -183,12 +145,32 @@
       type="module"
     ></script>
     <script type="module">
+      // Import PhotoSwipe
+      import PhotoSwipeLightbox from "https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.min.js";
+      import PhotoSwipe from "https://unpkg.com/photoswipe@5/dist/photoswipe.esm.min.js";
+
+      // Initialize PhotoSwipe with animation options
       const lightbox = new PhotoSwipeLightbox({
         gallery: "#gallery",
         children: "a",
-        pswpModule: () =>
-          import("https://unpkg.com/photoswipe@5/dist/photoswipe.esm.min.js"),
+        pswpModule: PhotoSwipe,
+        showHideAnimationType: "zoom",
+        showAnimationDuration: 300,
+        hideAnimationDuration: 300,
+        easing: "cubic-bezier(.4,0,.22,1)",
+        padding: { top: 20, bottom: 20, left: 20, right: 20 },
+        bgOpacity: 0.85,
       });
+
+      // Add animation effects
+      lightbox.on("beforeOpen", () => {
+        document.body.style.overflow = "hidden";
+      });
+
+      lightbox.on("close", () => {
+        document.body.style.overflow = "";
+      });
+
       lightbox.init();
     </script>
   </body>
