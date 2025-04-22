@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ảnh Mẫu Gallery</title>
-
-    <!-- PhotoSwipe CSS -->
     <link
       rel="stylesheet"
       href="https://unpkg.com/photoswipe@5/dist/photoswipe.css"
@@ -27,27 +25,19 @@
       }
       .gallery {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: var(--gallery-gap);
         max-width: 1200px;
         margin: 0 auto;
       }
-
-      @media (min-width: 600px) {
+      @media (min-width: 900px) {
         .gallery {
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(4, 1fr);
         }
         body {
           padding: 20px;
         }
       }
-
-      @media (min-width: 900px) {
-        .gallery {
-          grid-template-columns: repeat(4, 1fr);
-        }
-      }
-
       .gallery a {
         position: relative;
         overflow: hidden;
@@ -55,11 +45,9 @@
         transition: transform 0.3s ease;
         aspect-ratio: 1;
       }
-
       .gallery a:hover {
         transform: scale(1.02);
       }
-
       .gallery a img {
         width: 100%;
         height: 100%;
@@ -68,110 +56,75 @@
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         transition: transform 0.5s ease;
       }
-
       .gallery a:hover img {
         transform: scale(1.05);
-      }
-
-      .pswp__container {
-        transition: transform 0.4s ease-out !important;
-      }
-
-      .pswp__img {
-        border-radius: 4px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
       }
     </style>
   </head>
   <body>
     <h2>📸 Bộ sưu tập ảnh mẫu</h2>
-    <div class="gallery" id="gallery">
-      <!-- 5 ảnh từ R2 -->
-      <a
-        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/followus-fb.jpg"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img
-          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/followus-fb.jpg"
-          alt="R2 Image 1"
-        />
-      </a>
-      <a
-        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/followus-web.jpg"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img
-          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/followus-web.jpg"
-          alt="R2 Image 2"
-        />
-      </a>
-      <a
-        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/g-64-m-l1-2.jpg"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img
-          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/g-64-m-l1-2.jpg"
-          alt="R2 Image 3"
-        />
-      </a>
-      <a
-        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/g-st25-m-l1-2.jpg"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img
-          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/g-st25-m-l1-2.jpg"
-          alt="R2 Image 4"
-        />
-      </a>
-      <a
-        href="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/shopee%20cover.png"
-        data-pswp-width="1200"
-        data-pswp-height="800"
-      >
-        <img
-          src="https://pub-9b175f5732294f9e93c0da5ff5c3f67f.r2.dev/shopee%20cover.png"
-          alt="R2 Image 5"
-        />
-      </a>
-    </div>
+    <div class="gallery" id="gallery"></div>
 
     <!-- PhotoSwipe JS -->
-    <script
-      src="https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.min.js"
-      type="module"
-    ></script>
     <script type="module">
-      // Import PhotoSwipe
       import PhotoSwipeLightbox from "https://unpkg.com/photoswipe@5/dist/photoswipe-lightbox.esm.min.js";
       import PhotoSwipe from "https://unpkg.com/photoswipe@5/dist/photoswipe.esm.min.js";
 
-      // Initialize PhotoSwipe with animation options
-      const lightbox = new PhotoSwipeLightbox({
-        gallery: "#gallery",
-        children: "a",
-        pswpModule: PhotoSwipe,
-        showHideAnimationType: "zoom",
-        showAnimationDuration: 300,
-        hideAnimationDuration: 300,
-        easing: "cubic-bezier(.4,0,.22,1)",
-        padding: { top: 20, bottom: 20, left: 20, right: 20 },
-        bgOpacity: 0.85,
-      });
+      const gallery = document.getElementById("gallery");
+      const manifestUrl =
+        "https://cdn.gaolamthuy.vn/product-images/manifest.json"; // ✅ change if needed
 
-      // Add animation effects
-      lightbox.on("beforeOpen", () => {
-        document.body.style.overflow = "hidden";
-      });
+      async function loadGallery() {
+        try {
+          const res = await fetch(manifestUrl);
+          const data = await res.json();
 
-      lightbox.on("close", () => {
-        document.body.style.overflow = "";
-      });
+          const images = data.images
+            .filter((img) => img.visible)
+            .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
 
-      lightbox.init();
+          for (const img of images) {
+            const a = document.createElement("a");
+            a.href = img.urls.zoom;
+            a.setAttribute("data-pswp-width", 1600);
+            a.setAttribute("data-pswp-height", 1200);
+            a.setAttribute("target", "_blank");
+
+            const thumbnail = document.createElement("img");
+            thumbnail.src = img.urls.thumbnail;
+            thumbnail.alt = img.slug.replace(/-/g, " ");
+
+            a.appendChild(thumbnail);
+            gallery.appendChild(a);
+          }
+
+          const lightbox = new PhotoSwipeLightbox({
+            gallery: "#gallery",
+            children: "a",
+            pswpModule: PhotoSwipe,
+            showHideAnimationType: "zoom",
+            showAnimationDuration: 300,
+            hideAnimationDuration: 300,
+            easing: "cubic-bezier(.4,0,.22,1)",
+            padding: { top: 20, bottom: 20, left: 20, right: 20 },
+            bgOpacity: 0.85,
+          });
+
+          lightbox.on("beforeOpen", () => {
+            document.body.style.overflow = "hidden";
+          });
+
+          lightbox.on("close", () => {
+            document.body.style.overflow = "";
+          });
+
+          lightbox.init();
+        } catch (err) {
+          console.error("Failed to load image manifest:", err);
+        }
+      }
+
+      loadGallery();
     </script>
   </body>
 </html>
