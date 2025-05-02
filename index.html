@@ -83,11 +83,36 @@
             .filter((img) => img.visible)
             .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
 
+          function getImageSize(url) {
+            return new Promise((resolve) => {
+              const img = new Image();
+              img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+              img.onerror = () => resolve({ width: 1200, height: 900 }); // fallback
+              img.src = url;
+            });
+          }
+          
           for (const img of images) {
             const a = document.createElement("a");
             a.href = img.urls.zoom;
-            a.setAttribute("data-pswp-width", 1600);
-            a.setAttribute("data-pswp-height", 1200);
+            a.setAttribute("target", "_blank");
+          
+            // ⛑ fallback width/height detection
+            const { width, height } = img.zoomWidth && img.zoomHeight
+              ? { width: img.zoomWidth, height: img.zoomHeight }
+              : await getImageSize(img.urls.zoom);
+          
+            a.setAttribute("data-pswp-width", width);
+            a.setAttribute("data-pswp-height", height);
+          
+            const thumbnail = document.createElement("img");
+            thumbnail.src = img.urls.thumbnail;
+            thumbnail.alt = img.slug.replace(/-/g, " ");
+          
+            a.appendChild(thumbnail);
+            gallery.appendChild(a);
+          }
+
             a.setAttribute("target", "_blank");
 
             const thumbnail = document.createElement("img");
