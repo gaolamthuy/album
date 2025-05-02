@@ -74,55 +74,44 @@
       const manifestUrl =
         "https://cdn.gaolamthuy.vn/product-images/manifest.json"; // ✅ change if needed
 
+      async function getImageSize(url) {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
+          img.onerror = () => resolve({ width: 1200, height: 900 }); // fallback
+          img.src = url;
+        });
+      }
+      
       async function loadGallery() {
         try {
           const res = await fetch(manifestUrl);
           const data = await res.json();
-
+      
           const images = data.images
             .filter((img) => img.visible)
             .sort((a, b) => (a.sortOrder ?? 9999) - (b.sortOrder ?? 9999));
-
-          function getImageSize(url) {
-            return new Promise((resolve) => {
-              const img = new Image();
-              img.onload = () => resolve({ width: img.naturalWidth, height: img.naturalHeight });
-              img.onerror = () => resolve({ width: 1200, height: 900 }); // fallback
-              img.src = url;
-            });
-          }
-          
+      
           for (const img of images) {
             const a = document.createElement("a");
             a.href = img.urls.zoom;
             a.setAttribute("target", "_blank");
-          
-            // ⛑ fallback width/height detection
+      
             const { width, height } = img.zoomWidth && img.zoomHeight
               ? { width: img.zoomWidth, height: img.zoomHeight }
               : await getImageSize(img.urls.zoom);
-          
+      
             a.setAttribute("data-pswp-width", width);
             a.setAttribute("data-pswp-height", height);
-          
+      
             const thumbnail = document.createElement("img");
             thumbnail.src = img.urls.thumbnail;
             thumbnail.alt = img.slug.replace(/-/g, " ");
-          
+      
             a.appendChild(thumbnail);
             gallery.appendChild(a);
           }
-
-            a.setAttribute("target", "_blank");
-
-            const thumbnail = document.createElement("img");
-            thumbnail.src = img.urls.thumbnail;
-            thumbnail.alt = img.slug.replace(/-/g, " ");
-
-            a.appendChild(thumbnail);
-            gallery.appendChild(a);
-          }
-
+      
           const lightbox = new PhotoSwipeLightbox({
             gallery: "#gallery",
             children: "a",
@@ -134,22 +123,23 @@
             padding: { top: 20, bottom: 20, left: 20, right: 20 },
             bgOpacity: 0.85,
           });
-
+      
           lightbox.on("beforeOpen", () => {
             document.body.style.overflow = "hidden";
           });
-
+      
           lightbox.on("close", () => {
             document.body.style.overflow = "";
           });
-
+      
           lightbox.init();
         } catch (err) {
           console.error("Failed to load image manifest:", err);
         }
       }
-
+      
       loadGallery();
+
     </script>
   </body>
 </html>
