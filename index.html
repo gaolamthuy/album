@@ -71,8 +71,8 @@
       import PhotoSwipe from "https://unpkg.com/photoswipe@5/dist/photoswipe.esm.min.js";
 
       const gallery = document.getElementById("gallery");
-      const manifestUrl =
-        "https://cdn.gaolamthuy.vn/product-images/manifest.json"; // ✅ change if needed
+      const manifestUrl = "https://cdn.gaolamthuy.vn/product-images/manifest.json?t=" + Date.now();
+
 
       async function getImageSize(url) {
         return new Promise((resolve) => {
