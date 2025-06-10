@@ -1,14 +1,38 @@
+---
+import ThemeToggle from '../components/ThemeToggle.astro';
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<!-- Font Nunito -->
+		<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+		
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>Photo Gallery</title>
+		
+		<!-- PhotoSwipe CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.css" />
 	</head>
 	<body>
+		<ThemeToggle />
 		<slot />
+		
+		<!-- PhotoSwipe JS -->
+		<script type="module">
+			import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.js';
+			
+			const lightbox = new PhotoSwipeLightbox({
+				gallery: '#gallery',
+				children: 'a',
+				pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.4.4/dist/photoswipe.esm.js')
+			});
+			
+			lightbox.init();
+		</script>
 	</body>
 </html>
 

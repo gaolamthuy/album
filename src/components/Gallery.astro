@@ -1,0 +1,148 @@
+---
+import { supabase, type AlbumImage } from '../lib/supabase'
+
+// Fetch images from Supabase
+const { data: images, error } = await supabase
+  .from('glt_album_website')
+  .select('*')
+  .limit(10)
+  .order('id', { ascending: true })
+
+if (error) {
+  console.error('Error fetching images:', error)
+}
+
+const galleryImages: AlbumImage[] = images || []
+---
+
+<div class="min-h-screen bg-base-100">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="text-center mb-12">
+      <h1 class="text-5xl font-bold text-base-content mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+        Album Gạo Lâm Thúy
+      </h1>
+      <p class="text-xl text-base-content/70 max-w-2xl mx-auto">
+        Album Gạo Lâm Thúy 📸🏷️
+      </p>
+    </div>
+
+    {galleryImages.length > 0 ? (
+      <!-- Gallery Grid -->
+      <div id="gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        {galleryImages.map((image, index) => (
+          <a
+            href={image.url}
+            data-pswp-width="1200"
+            data-pswp-height="1600"
+            class="block group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-base-200"
+            data-pswp-caption={image.title}
+          >
+            <div class="aspect-square overflow-hidden">
+              <img
+                src={image.url}
+                alt={image.title}
+                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading={index < 3 ? "eager" : "lazy"}
+              />
+            </div>
+            <div class="p-4">
+              <h3 class="font-semibold text-base-content text-lg mb-1 truncate">
+                {image.title.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+              </h3>
+              <div class="flex items-center justify-between">
+                <span class="badge badge-primary badge-outline">
+                  {image.type.replace(/-/g, ' ')}
+                </span>
+                <span class="text-xs text-base-content/50">
+                  {new Date(image.created_at).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+      
+      <!-- Footer Info -->
+      <div class="text-center mt-12">
+        <div class="stats shadow">
+          <div class="stat">
+            <div class="stat-title">Total Images</div>
+            <div class="stat-value text-primary">{galleryImages.length}</div>
+            <div class="stat-desc">Available in gallery</div>
+          </div>
+        </div>
+      </div>
+    ) : error ? (
+      <!-- Error State -->
+      <div class="text-center py-12">
+        <div class="alert alert-error max-w-md mx-auto">
+          <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Error loading gallery. Please try again later.</span>
+        </div>
+      </div>
+    ) : (
+      <!-- Loading State -->
+      <div class="text-center py-12">
+        <div class="flex flex-col items-center gap-4">
+          <span class="loading loading-spinner loading-lg text-primary"></span>
+          <p class="text-base-content/70">Loading beautiful images...</p>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
+
+<!-- Custom styles for PhotoSwipe integration -->
+<style>
+  /* Smooth image loading */
+  img {
+    transition: opacity 0.3s ease;
+  }
+  
+  img[loading="lazy"] {
+    opacity: 0;
+  }
+  
+  img[loading="lazy"].loaded {
+    opacity: 1;
+  }
+  
+  /* Custom PhotoSwipe theme integration */
+  .pswp__bg {
+    background: oklch(var(--b1));
+    opacity: 0.9 !important;
+  }
+  
+  .pswp__top-bar {
+    background: oklch(var(--b2));
+  }
+</style>
+
+<script>
+  // Lazy loading optimization
+  function initLazyLoading() {
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+    
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+          img.onload = () => img.classList.add('loaded');
+          observer.unobserve(img);
+        }
+      });
+    });
+    
+    lazyImages.forEach(img => imageObserver.observe(img));
+  }
+  
+  // Initialize when DOM is loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLazyLoading);
+  } else {
+    initLazyLoading();
+  }
+</script> 
