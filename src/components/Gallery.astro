@@ -30,37 +30,40 @@ const galleryImages: AlbumImage[] = images || []
     {galleryImages.length > 0 ? (
       <!-- Gallery Grid -->
       <div id="gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-        {galleryImages.map((image, index) => (
-          <a
-            href={image.url}
-            data-pswp-width="1200"
-            data-pswp-height="1600"
-            class="block group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-base-200"
-            data-pswp-caption={image.title}
-          >
-            <div class="aspect-square overflow-hidden">
-              <img
-                src={image.url}
-                alt={image.title}
-                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                loading={index < 3 ? "eager" : "lazy"}
-              />
-            </div>
-            <div class="p-4">
-              <h3 class="font-semibold text-base-content text-lg mb-1 truncate">
-                {image.title.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-              </h3>
-              <div class="flex items-center justify-between">
-                <span class="badge badge-primary badge-outline">
-                  {image.type.replace(/-/g, ' ')}
-                </span>
-                <span class="text-xs text-base-content/50">
-                  {new Date(image.created_at).toLocaleDateString()}
-                </span>
+        {galleryImages.map((image, index) => {
+          const cacheBustedUrl = `${image.url}?cb=${Date.now()}`;
+          return (
+            <a
+              href={cacheBustedUrl}
+              data-pswp-width="1200"
+              data-pswp-height="1600"
+              class="block group overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 bg-base-200"
+              data-pswp-caption={image.title}
+            >
+              <div class="aspect-square overflow-hidden">
+                <img
+                  src={cacheBustedUrl}
+                  alt={image.title}
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="eager" // new code: force eager loading
+                />
               </div>
-            </div>
-          </a>
-        ))}
+              <div class="p-4">
+                <h3 class="font-semibold text-base-content text-lg mb-1 truncate">
+                  {image.title.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                </h3>
+                <div class="flex items-center justify-between">
+                  <span class="badge badge-primary badge-outline">
+                    {image.type.replace(/-/g, ' ')}
+                  </span>
+                  <span class="text-xs text-base-content/50">
+                    {new Date(image.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            </a>
+          );
+        })}
       </div>
       
       <!-- Footer Info -->
