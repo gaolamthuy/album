@@ -104,15 +104,6 @@ const galleryImages: AlbumImage[] = images || []
   img {
     transition: opacity 0.3s ease;
   }
-  
-  img[loading="lazy"] {
-    opacity: 0;
-  }
-  
-  img[loading="lazy"].loaded {
-    opacity: 1;
-  }
-  
   /* Custom PhotoSwipe theme integration */
   .pswp__bg {
     background: oklch(var(--b1));
@@ -123,29 +114,3 @@ const galleryImages: AlbumImage[] = images || []
     background: oklch(var(--b2));
   }
 </style>
-
-<script>
-  // Lazy loading optimization
-  function initLazyLoading() {
-    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
-    
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target as HTMLImageElement;
-          img.onload = () => img.classList.add('loaded');
-          observer.unobserve(img);
-        }
-      });
-    });
-    
-    lazyImages.forEach(img => imageObserver.observe(img));
-  }
-  
-  // Initialize when DOM is loaded
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initLazyLoading);
-  } else {
-    initLazyLoading();
-  }
-</script> 

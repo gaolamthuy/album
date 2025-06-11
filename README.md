@@ -10,7 +10,6 @@ A beautiful photo gallery website built with Astro, featuring PhotoSwipe lightbo
 - ⚡ **Astro Framework**: Fast, modern static site generation
 - 📱 **Responsive Design**: Works perfectly on all devices
 - 🌙 **Theme Toggle**: Switch between light and dark themes
-- 🖼️ **Lazy Loading**: Optimized image loading for better performance
 
 ## Setup
 
